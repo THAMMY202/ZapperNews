@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="@dimen/cardview_default_elevation"
-    app:cardCornerRadius="@dimen/cardview_default_radius">
+    android:layout_margin="8dp"
+    android:elevation="5dp"
+    app:cardCornerRadius="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,18 +13,18 @@
 
         <ImageView
             android:id="@+id/imgStoryLogo"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/obama" />
 
         <LinearLayout
-            android:layout_marginLeft="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:layout_toRightOf="@+id/imgStoryLogo"
             android:orientation="vertical">
 
@@ -31,7 +32,7 @@
                 android:id="@+id/tvStoryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="News Title" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,24 +43,21 @@
                     android:id="@+id/tvStorySource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="The sun"
                     android:textColor="@android:color/holo_green_light" />
 
                 <TextView
                     android:id="@+id/tvStoryTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="- 6 m ago" />
+                    android:layout_marginLeft="5dp" />
 
             </LinearLayout>
 
             <TextView
-                android:maxLines="4"
                 android:id="@+id/tvStoryDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This will be description section n jdv jd jd jdd d dj dj " />
+                android:maxLines="4" />
 
 
         </LinearLayout>

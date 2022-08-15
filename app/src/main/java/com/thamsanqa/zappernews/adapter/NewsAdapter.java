@@ -8,13 +8,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.marlonlom.utilities.timeago.TimeAgo;
+import com.thamsanqa.zappernews.MainActivity;
 import com.thamsanqa.zappernews.R;
 import com.thamsanqa.zappernews.pojo.News;
+import com.thamsanqa.zappernews.ui.DetailFragment;
+import com.thamsanqa.zappernews.util.Config;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>  {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private Context context;
     public News news;
@@ -35,10 +44,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>  {
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder,final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat(Config.DATE_FORMAT);
+        try {
+            Date mDate = sdf.parse(news.getData().get(position).getPublishedAt());
+            holder.textViewStoryTime.setText(TimeAgo.using(mDate.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            holder.textViewStoryTime.setText(news.getData().get(position).getPublishedAt());
+        }
 
         holder.textViewStoryTitle.setText(news.getData().get(position).getTitle());
-        holder.textViewStoryTime.setText(news.getData().get(position).getPublishedAt());
         holder.textViewStorySource.setText(news.getData().get(position).getSource());
         holder.textViewStoryDescription.setText(news.getData().get(position).getDescription());
         Glide.with(context).load(news.getData().get(position).getImage()).into(holder.imageViewStoryLogo);

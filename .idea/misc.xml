@@ -5,7 +5,8 @@
       <map>
         <entry key="..\:/AndroidProjects/ZapperNews/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/ZapperNews/app/src/main/res/layout/fragment_detail.xml" value="0.1" />
-        <entry key="..\:/AndroidProjects/ZapperNews/app/src/main/res/layout/news_layout.xml" value="0.536" />
+        <entry key="..\:/AndroidProjects/ZapperNews/app/src/main/res/layout/fragment_list.xml" value="0.1" />
+        <entry key="..\:/AndroidProjects/ZapperNews/app/src/main/res/layout/news_layout.xml" value="0.1" />
       </map>
     </option>
   </component>
