@@ -28,5 +28,4 @@ public class News {
     public void setData(List<Datum> data) {
         this.data = data;
     }
-
 }

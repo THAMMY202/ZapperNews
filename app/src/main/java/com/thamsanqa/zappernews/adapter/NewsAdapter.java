@@ -8,15 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
-import com.thamsanqa.zappernews.MainActivity;
 import com.thamsanqa.zappernews.R;
 import com.thamsanqa.zappernews.pojo.News;
-import com.thamsanqa.zappernews.ui.DetailFragment;
 import com.thamsanqa.zappernews.util.Config;
 
 import java.text.ParseException;
@@ -63,7 +60,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return news.getPagination().getCount();
+        int size = 0;
+
+        if (news.getPagination() != null) {
+            size = news.getPagination().getCount();
+        } else {
+            size = news.getData().size();
+        }
+        return size;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
