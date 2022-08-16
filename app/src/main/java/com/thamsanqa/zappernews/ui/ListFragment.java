@@ -8,6 +8,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.thamsanqa.zappernews.api.ApiClient;
 import com.thamsanqa.zappernews.pojo.Datum;
 import com.thamsanqa.zappernews.pojo.News;
 import com.thamsanqa.zappernews.util.Config;
+import com.thamsanqa.zappernews.viewModel.NewsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,20 +34,44 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListFragment extends Fragment {
 
-    private News news;
     private News searchedNewsValues;
     private RecyclerView recyclerView;
     private NewsAdapter newsAdapter;
     private SearchView searchView;
+    private NewsViewModel mViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_list, container, false);
-        findViewByIds(root);
 
+        mViewModel = new ViewModelProvider(requireActivity()).get(NewsViewModel.class);
+
+        findViewByIds(root);
         initRetrofit();
+
+        if (mViewModel.news == null) {
+            initRetrofit();
+        } else {
+        }
+
         return root;
+    }
+
+    private void goToDetails(Datum news) {
+
+        Bundle args = new Bundle();
+        String personJsonString = Config.getGsonParser().toJson(news);
+        args.putString(Config.SELECTED_NEWS, personJsonString);
+
+        DetailFragment detailFragment = new DetailFragment();
+        detailFragment.setArguments(args);
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.FragmentContainer, detailFragment)
+                .addToBackStack("tag")
+                .commit();
     }
 
     private void findViewByIds(View view) {
@@ -85,10 +111,15 @@ public class ListFragment extends Fragment {
             public void onResponse(Call<News> call, Response<News> response) {
 
                 if (response != null && response.isSuccessful()) {
-                    news = response.body();
+                    mViewModel.news = response.body();
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1, LinearLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(gridLayoutManager);
-                    newsAdapter = new NewsAdapter(getActivity(), news);
+                    newsAdapter = new NewsAdapter(getActivity(), mViewModel.news, new NewsAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            goToDetails(mViewModel.news.getData().get(position));
+                        }
+                    });
                     recyclerView.setAdapter(newsAdapter);
                 }
             }
@@ -102,21 +133,30 @@ public class ListFragment extends Fragment {
 
 
     private void resetData(String query) {
-        List<Datum> data = new ArrayList<>();
-        searchedNewsValues = new News();
 
-        for (int i = 0; i < news.getPagination().getCount(); i++) {
+        if (query != null && !query.isEmpty()) {
+            List<Datum> data = new ArrayList<>();
+            searchedNewsValues = new News();
 
-            if (news.getData().get(i).getSource() != null && news.getData().get(i).getSource().contains(query) ||
-                    news.getData().get(i).getAuthor().contains(query)) {
-                data.add(news.getData().get(i));
-                searchedNewsValues.setData(data);
+            for (int i = 0; i < mViewModel.news.getPagination().getCount(); i++) {
+
+                if (mViewModel.news.getData().get(i).getSource() != null && mViewModel.news.getData().get(i).getSource().contains(query) ||
+                        mViewModel.news.getData().get(i).getAuthor().contains(query)) {
+                    data.add(mViewModel.news.getData().get(i));
+                    searchedNewsValues.setData(data);
+                }
             }
-        }
 
-        if (data != null && data.size() > 0) {
-            newsAdapter = new NewsAdapter(getActivity(), searchedNewsValues);
-            recyclerView.setAdapter(newsAdapter);
+            if (data != null && data.size() > 0) {
+                newsAdapter = new NewsAdapter(getActivity(), mViewModel.news, new NewsAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        goToDetails(mViewModel.news.getData().get(position));
+                    }
+                });
+
+                recyclerView.setAdapter(newsAdapter);
+            }
         }
     }
 

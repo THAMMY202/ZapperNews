@@ -1,10 +1,6 @@
 package com.thamsanqa.zappernews;
-
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import com.thamsanqa.zappernews.ui.ListFragment;
 
 /**
@@ -19,5 +15,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportFragmentManager().beginTransaction().add(R.id.FragmentContainer,new ListFragment()).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

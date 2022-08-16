@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.DetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/imgDetailsStoryLogo"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/obama"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="250dp"/>
 
-</FrameLayout>
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/imgDetailsStoryLogo"
+        android:id="@+id/tvStoryDetailsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tvStoryDetailsTitle"
+        android:id="@+id/tvStoryDetailsDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_below="@+id/tvStoryDetailsDescription"
+        android:id="@+id/tvStoryDetailsTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp" />
+
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/tvStoryDetailsAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/tvStoryDetailsSource"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

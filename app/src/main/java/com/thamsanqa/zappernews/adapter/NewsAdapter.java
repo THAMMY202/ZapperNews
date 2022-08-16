@@ -22,10 +22,16 @@ import java.util.Date;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
+    private OnItemClickListener mOnItemClickListener;
     private Context context;
     public News news;
 
-    public NewsAdapter(Context context, News news) {
+    public interface OnItemClickListener {
+         void onItemClick(View view, int position);
+    }
+
+    public NewsAdapter(Context context, News news,OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
         this.context = context;
         this.news = news;
     }
@@ -56,6 +62,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.textViewStorySource.setText(news.getData().get(position).getSource());
         holder.textViewStoryDescription.setText(news.getData().get(position).getDescription());
         Glide.with(context).load(news.getData().get(position).getImage()).into(holder.imageViewStoryLogo);
+
+        holder.imageViewStoryLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
+            }
+        });
+
     }
 
     @Override
