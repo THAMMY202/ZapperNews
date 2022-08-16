@@ -58,8 +58,6 @@ public class DetailFragment extends Fragment {
         } else {
             textViewAuthor.setText(String.format("by %s", "anonymous"));
         }
-
-       // datum.getCategory()
     }
 
     private void showMsg(String message) {

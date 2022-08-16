@@ -39,11 +39,14 @@ public class ListFragment extends Fragment {
     private NewsAdapter newsAdapter;
     private SearchView searchView;
     private NewsViewModel mViewModel;
+    private com.airbnb.lottie.LottieAnimationView lottieAnimationView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_list, container, false);
+
+
 
         mViewModel = new ViewModelProvider(requireActivity()).get(NewsViewModel.class);
 
@@ -77,6 +80,10 @@ public class ListFragment extends Fragment {
     private void findViewByIds(View view) {
         recyclerView = view.findViewById(R.id.recyclerviewStories);
         searchView = view.findViewById(R.id.searchView);
+        lottieAnimationView = view.findViewById(R.id.loading);
+
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -121,6 +128,8 @@ public class ListFragment extends Fragment {
                         }
                     });
                     recyclerView.setAdapter(newsAdapter);
+                    lottieAnimationView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -156,6 +165,8 @@ public class ListFragment extends Fragment {
                 });
 
                 recyclerView.setAdapter(newsAdapter);
+                lottieAnimationView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
         }
     }
