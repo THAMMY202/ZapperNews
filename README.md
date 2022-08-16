@@ -23,7 +23,5 @@ Hi there! below is my assessment overview
 - Networking library: Retrofit
 - Image library: Glide
 
-> You can complete these tasks in any order you like, but starting with one or two bugs might be a good way to get into the codebase.
-
 
 
