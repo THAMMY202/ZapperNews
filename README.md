@@ -19,6 +19,9 @@ Hi there! below is my assessment overview
 - Programming Language : Java
 - IDE : Android Studio
 - Source Control: Git/GitHub
+- News API: Mediastack
+- Networking library: Retrofit
+- Image library: Glide
 
 > You can complete these tasks in any order you like, but starting with one or two bugs might be a good way to get into the codebase.
 
