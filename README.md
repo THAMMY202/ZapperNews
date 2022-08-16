@@ -23,5 +23,7 @@ Hi there! below is my assessment overview
 - Networking library: Retrofit
 - Image library: Glide
 
+![Screenshot_20220816_192647](https://user-images.githubusercontent.com/50228796/184941903-0acb817b-da6e-4ae2-803c-cfdf8938cd8b.png)
+![Screenshot_20220816_192707](https://user-images.githubusercontent.com/50228796/184941998-90407f03-5fef-4433-b772-b0fd3e8ca39c.png)
 
 
