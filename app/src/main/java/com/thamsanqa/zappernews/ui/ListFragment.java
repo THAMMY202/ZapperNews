@@ -2,6 +2,9 @@ package com.thamsanqa.zappernews.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -46,18 +49,10 @@ public class ListFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_list, container, false);
 
-
-
         mViewModel = new ViewModelProvider(requireActivity()).get(NewsViewModel.class);
 
         findViewByIds(root);
         initRetrofit();
-
-        if (mViewModel.news == null) {
-            initRetrofit();
-        } else {
-        }
-
         return root;
     }
 
@@ -82,9 +77,6 @@ public class ListFragment extends Fragment {
         searchView = view.findViewById(R.id.searchView);
         lottieAnimationView = view.findViewById(R.id.loading);
 
-        lottieAnimationView.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -100,44 +92,97 @@ public class ListFragment extends Fragment {
         });
     }
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        // TODO Add your menu entries here
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_refresh:
+
+                //clearing old data
+                mViewModel.news = null;
+
+
+                initRetrofit();
+                break;
+        }
+        return true;
+
+    }
+
     private void initRetrofit() {
-        Gson gson = new GsonBuilder()
-                .setDateFormat(Config.DATE_FORMAT)
-                .create();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
 
-        ApiClient apiService = retrofit.create(ApiClient.class);
+        if (mViewModel.news == null) {
+            // showMsg("view model is null");
+            Gson gson = new GsonBuilder()
+                    .setDateFormat(Config.DATE_FORMAT)
+                    .create();
 
-        Call<News> call = apiService.getNews(Config.ACCESS_KEY);
-        call.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
 
-                if (response != null && response.isSuccessful()) {
-                    mViewModel.news = response.body();
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1, LinearLayoutManager.VERTICAL, false);
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    newsAdapter = new NewsAdapter(getActivity(), mViewModel.news, new NewsAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            goToDetails(mViewModel.news.getData().get(position));
-                        }
-                    });
-                    recyclerView.setAdapter(newsAdapter);
-                    lottieAnimationView.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+            ApiClient apiService = retrofit.create(ApiClient.class);
+
+            Call<News> call = apiService.getNews(Config.ACCESS_KEY);
+            call.enqueue(new Callback<News>() {
+                @Override
+                public void onResponse(Call<News> call, Response<News> response) {
+
+                    if (response != null && response.isSuccessful()) {
+                        mViewModel.news = response.body();
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1, LinearLayoutManager.VERTICAL, false);
+                        recyclerView.setLayoutManager(gridLayoutManager);
+                        newsAdapter = new NewsAdapter(getActivity(), mViewModel.news, new NewsAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                goToDetails(mViewModel.news.getData().get(position));
+                            }
+                        });
+                        recyclerView.setAdapter(newsAdapter);
+                        lottieAnimationView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                showMsg(t.toString());
-            }
-        });
+                @Override
+                public void onFailure(Call<News> call, Throwable t) {
+                    showMsg(t.toString());
+                }
+            });
+
+
+        } else {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1, LinearLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            newsAdapter = new NewsAdapter(getActivity(), mViewModel.news, new NewsAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    goToDetails(mViewModel.news.getData().get(position));
+                }
+            });
+            recyclerView.setAdapter(newsAdapter);
+            lottieAnimationView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
 
