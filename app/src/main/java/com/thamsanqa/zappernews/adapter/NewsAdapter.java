@@ -61,7 +61,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.textViewStoryTitle.setText(news.getData().get(position).getTitle());
         holder.textViewStorySource.setText(news.getData().get(position).getSource());
         holder.textViewStoryDescription.setText(news.getData().get(position).getDescription());
-        Glide.with(context).load(news.getData().get(position).getImage()).into(holder.imageViewStoryLogo);
+
+
+        if(news.getData().get(position).getImage() !=null && !news.getData().get(position).getImage().toString().isEmpty()){
+            Glide.with(context).load(news.getData().get(position).getImage()).into(holder.imageViewStoryLogo);
+        }else {
+            Glide.with(context).load(R.drawable.place_holder_news).into(holder.imageViewStoryLogo);
+        }
 
         holder.imageViewStoryLogo.setOnClickListener(new View.OnClickListener() {
             @Override

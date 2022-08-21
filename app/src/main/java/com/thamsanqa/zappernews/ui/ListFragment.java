@@ -108,12 +108,9 @@ public class ListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case R.id.action_refresh:
-
                 //clearing old data
                 mViewModel.news = null;
-
 
                 initRetrofit();
                 break;
@@ -201,7 +198,7 @@ public class ListFragment extends Fragment {
                 }
             }
 
-            if (data != null && data.size() > 0) {
+            if (data.size() > 0) {
                 newsAdapter = new NewsAdapter(getActivity(), mViewModel.news, new NewsAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {

@@ -47,7 +47,14 @@ public class DetailFragment extends Fragment {
 
     private void displayNews(Datum datum) {
 
-        Glide.with(getActivity()).load(datum.getImage()).into(imageView);
+
+
+        if (datum.getImage() !=null && !datum.getImage().toString().isEmpty()){
+            Glide.with(getActivity()).load(datum.getImage()).into(imageView);
+        }else {
+            Glide.with(getActivity()).load(R.drawable.place_holder_news).into(imageView);
+        }
+
         textViewTitle.setText(datum.getTitle());
         textViewDescription.setText(datum.getDescription());
         textViewPublishedAt.setText(datum.getPublishedAt());
